@@ -1,0 +1,45 @@
+@import 'nativescript-theme-core/css/core.light.css';
+
+.action-bar {
+    background-color: #d50000;
+    color: white
+}
+Page {
+  background-color: #048E27; 
+}
+
+.btn-primary {
+  background-color: #66cc33; 
+}
+
+.input-border{
+    border-width: 1;
+    border-color: #d50000;
+}
+.header {
+    color:white;
+    font-weight: bold;
+    margin: 10;
+}
+
+.logo {
+    margin-top: 5;
+    margin-bottom: 10;
+}
+
+.fa {
+  font-family: FontAwesome, fontawesome-webfont;
+}
+
+.card {
+    margin: 10;
+    padding: 5;
+    vertical-align:top;
+    background-color: white;
+    border-width: 1;
+    border-radius: 5;
+    border-color: white;
+}
+.gold {
+    background-color: #FACC45;
+}

@@ -1,0 +1,33 @@
+
+    <ActionBar title="My Giftler" icon="" class="action-bar">
+      <ActionItem (tap)="logout()">
+        <Button text="Logout" class="action-item"></Button>
+      </ActionItem>      
+    </ActionBar>
+
+
+<ScrollView>
+
+    <StackLayout>
+    <Label class="h2 header" text="I want..."></Label>
+    <StackLayout class="card">    
+        <GridLayout columns="2*,1*" class="form">
+            <TextField class="input input-border" col="0" #gift [(ngModel)]="name"></TextField>
+            <Button class="btn btn-primary" col="1" text="Save" (tap)="add()"></Button>
+        </GridLayout>
+    </StackLayout>
+    <Label class="h2 header" text="My Wish List"></Label>
+    <StackLayout class="card">
+        <ListView [items]="gifts$ | async" class="list">
+            <template let-item="item">                  
+                <GridLayout columns="*,*" (tap)="viewDetail(item.id)">
+                    <Image width="40" height="40" [src]='item.image'></Image>
+                    <Label class="line-item-text" [text]='item.name'></Label>
+                </GridLayout>                 
+            </template>
+        </ListView>
+    </StackLayout>
+
+    </StackLayout>
+
+</ScrollView>
