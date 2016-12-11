@@ -180,6 +180,18 @@ export class FirebaseService {
       });
   }
 
+  getDownloadUrl(remoteFilePath: string): Promise<any> {
+      return firebase.getDownloadUrl({
+        remoteFullPath: remoteFilePath})
+      .then(
+        function (url:string) {
+          return url;
+        },
+        function (errorMessage:any) {
+          console.log(errorMessage);
+        });
+}
+
   handleErrors(error) {
     console.log(JSON.stringify(error));
     return Promise.reject(error.message);

@@ -21,7 +21,8 @@
         <ListView [items]="gifts$ | async" class="list">
             <template let-item="item">                  
                 <GridLayout columns="*,*" (tap)="viewDetail(item.id)">
-                    <Label class="line-item-text" [text]='item.name'></Label>
+                    <Image horizontalAlignment="left" col="0" width="40" height="40" [src]="'item.imagepath.length>0 ? item.imagepath | ~/assets/camera.png'"></Image>
+                    <Label col="1" class="line-item-text" [text]='item.name'></Label>
                 </GridLayout>                 
             </template>
         </ListView>

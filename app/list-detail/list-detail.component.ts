@@ -30,6 +30,7 @@ export class ListDetailComponent implements OnInit {
   image: any;
   private sub: any;
   private imagePath: string;
+  private uploadedImageName: string;
   private uploadedImagePath: string;
   public gift: Observable<any>;
   
@@ -94,12 +95,15 @@ editGift(id: string){
   if(this.imagePath){
     //upload the file, then save all
     this.firebaseService.uploadFile(this.imagePath).then((uploadedFile: any) => {
-          this.uploadedImagePath = 'https://firebasestorage.googleapis.com/v0/b/giftler-f48c4.appspot.com/o/'+uploadedFile.name+'?alt=media&token=abc';
-          this.firebaseService.editGift(id,this.description,this.uploadedImagePath).then((result:any) => {
+          this.uploadedImageName = uploadedFile.name;
+          //get downloadURL and store it as a full path;
+          this.firebaseService.getDownloadUrl(this.uploadedImageName).then((downloadUrl: string) => {
+            this.firebaseService.editGift(id,this.description,downloadUrl).then((result:any) => {
               alert(result)
-          }, (error: any) => {
-              alert(error);
-          });
+            }, (error: any) => {
+                alert(error);
+            });
+          })
         }, (error: any) => {
           alert('File upload error: ' + error);
         });
