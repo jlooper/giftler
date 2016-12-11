@@ -1,10 +1,11 @@
 <ActionBar class="action-bar" title="{{name}}"></ActionBar>
     <ScrollView>
         <StackLayout class="card">  
-            <Label class="h2" text="I want a {{name}}, please!"></Label> 
+            <Label class="h2" text="I really want..."></Label> 
             <Label class="m-t-5" text="Add a description"></Label>
-            <TextView height="200" hint="Enter text" class="m-t-10 input input-border" returnKeyType="done" [(ngModel)]="description"></TextView>
+            <TextView height="200" hint="Tell more about this gift!" [text]="description" class="m-t-10 input input-border" returnKeyType="done" [(ngModel)]="description"></TextView>
+            <Image [src]="image"></Image>
             <Button class="btn gold" text="Add a photo" (tap)="takePhoto()"></Button>
-            <Button class="btn btn-primary" text="Save" (tap)="save()"></Button>    
+            <Button class="btn btn-primary" text="Save" (tap)="editGift(id)"></Button>    
         </StackLayout>
     </ScrollView>

@@ -1,7 +1,7 @@
 {
     "private": false,
     "nativescript": {
-        "id": "org.nativescript.helloworldng"
+        "id": "com.ladeezfirstmedia.giftler"
     },
     "name": "tns-template-hello-world-ng",
     "main": "main.js",

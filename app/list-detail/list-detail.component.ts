@@ -24,6 +24,8 @@ export class ListDetailComponent implements OnInit {
   
   id: string;
   name: string;
+  description: string;
+  image: ImageSource;
   private sub: any;
   public gift: Observable<any>;
   
@@ -47,6 +49,9 @@ export class ListDetailComponent implements OnInit {
             }
             if (prop === "name") {
               this.name = gift[prop];
+            }
+            if (prop === "description") {
+              this.description = gift[prop];
             }                       
           }
         });
@@ -58,11 +63,9 @@ takePhoto() {
     camera.takePicture()
         .then(imageAsset => {
             console.log("Result is an image asset instance");
-            img.src = imageAsset;
-
             fromAsset(imageAsset).then(res => {
                 myImageSource = res;
-                console.log(myImageSource);
+                this.image = myImageSource;
             })
         }).catch(function (err) {
             console.log("Error -> " + err.message);
@@ -81,8 +84,14 @@ saveToFile(): void {
     console.log(saved);
 }
 
-save(){
-
+editGift(id: string){
+    this.firebaseService.editGift(id,this.description).then((result:any) => {
+          alert(result)
+        }, (error: any) => {
+          alert(error);
+        }); 
 }
+
+
 
 }

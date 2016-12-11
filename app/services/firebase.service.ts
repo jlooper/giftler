@@ -147,10 +147,17 @@ export class FirebaseService {
         }); 
   }
 
-  addDescription(id: string){
-    //edit
+  editGift(id:string, description: string){
+    this.publishUpdates();
+    return firebase.update("/Gifts/"+id+"",{description: description})
+      .then(
+        function (result:any) {
+          return 'You have successfully described this gift!';
+        },
+        function (errorMessage:any) {
+          console.log(errorMessage);
+        });  
   }
-
   delete(gift: Gift) {
     return firebase.remove("/Gifts/"+gift.id+"")
       .catch(this.handleErrors);
