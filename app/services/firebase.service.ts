@@ -149,9 +149,11 @@ export class FirebaseService {
         }); 
   }
 
-  editGift(id:string, description: string, image: string){
+  editGift(id:string, description: string, imagepath: string){
     this.publishUpdates();
-    return firebase.update("/Gifts/"+id+"",{description: description, image: image})
+    return firebase.update("/Gifts/"+id+"",{
+        description: description, 
+        imagepath: imagepath})
       .then(
         function (result:any) {
           return 'You have successfully edited this gift!';
@@ -165,7 +167,7 @@ export class FirebaseService {
       .catch(this.handleErrors);
   }
   
-  public saveImage(localPath: string, file?: any): Promise<any> {
+  uploadFile(localPath: string, file?: any): Promise<any> {
       let filename = this.utils.getFilename(localPath);
       let remotePath = `${filename}`;   
       return firebase.uploadFile({

@@ -6,6 +6,6 @@ import { AuthGuard } from "../auth-guard.service";
 
 
 const listRoutes: Routes = [
-  { path: "list", component: ListComponent, canActivate: [AuthGuard] },
+  { path: "", component: ListComponent, canActivate: [AuthGuard] },
 ];
 export const listRouting: ModuleWithProviders = RouterModule.forChild(listRoutes);

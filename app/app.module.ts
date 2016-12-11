@@ -5,7 +5,7 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 
 import { authProviders, appRoutes } from "./app.routes";
 import { AppComponent } from "./app.component";
-import { BackendService, FirebaseService } from "./services";
+import { BackendService, FirebaseService, UtilsService } from "./services";
 
 import { LoginModule } from "./login/login.module";
 import { ListModule } from "./list/list.module";
@@ -15,6 +15,7 @@ import { ListDetailModule } from "./list-detail/list-detail.module";
   providers: [
     BackendService,
     FirebaseService,
+    UtilsService,
     authProviders
   ],
   imports: [

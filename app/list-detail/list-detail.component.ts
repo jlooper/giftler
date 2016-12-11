@@ -1,20 +1,21 @@
 import {Component, OnInit, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Router, ActivatedRoute} from '@angular/router';
-import { FirebaseService } from "../services";
+import { FirebaseService, UtilsService } from "../services";
 import {Gift} from "../models";
 //camera imports
-import { Image } from "ui/image";
-import { ImageSource, fromAsset } from "image-source";
-import { ImageAsset } from "image-asset";
-import * as appSettings from 'application-settings';
+//import { Image } from "ui/image";
+//import { ImageSource, fromAsset, fromNativeSource } from "image-source";
+import * as enums from 'ui/enums';
+import * as imageSource from 'image-source';
+//import { ImageAsset } from "image-asset";
+//import * as appSettings from 'application-settings';
 
 import * as camera from "nativescript-camera";
 import * as fs from "file-system";
 
 var imageModule = require("ui/image");
 var img;
-var myImageSource: ImageSource;
 
 @Component({
   moduleId: module.id,
@@ -26,16 +27,18 @@ export class ListDetailComponent implements OnInit {
   id: string;
   name: string;
   description: string;
-  image: ImageSource;
+  image: any;
   private sub: any;
   private imagePath: string;
+  private uploadedImagePath: string;
   public gift: Observable<any>;
   
   constructor(
         private route: ActivatedRoute,
         private router: Router,
         private ngZone: NgZone,
-        private firebaseService: FirebaseService
+        private firebaseService: FirebaseService,
+        private utilsService: UtilsService
     ) {}
 
  ngOnInit() {
@@ -62,48 +65,54 @@ export class ListDetailComponent implements OnInit {
   }
 
 takePhoto() {
-    camera.takePicture()
+  let options = {
+            width: 300,
+            height: 300,
+            keepAspectRatio: true,
+            saveToGallery: true
+        };
+    camera.takePicture(options)
         .then(imageAsset => {
-            console.log("Result is an image asset instance");
-            fromAsset(imageAsset).then(res => {
-                myImageSource = res;
-                this.image = myImageSource;
-                this.saveToFile();
+            imageSource.fromAsset(imageAsset).then(res => {
+                this.image = res;
+                //save the source image to a file, then send that file path to firebase
+                this.saveToFile(this.image);
             })
         }).catch(function (err) {
             console.log("Error -> " + err.message);
         });
 }
 
-saveToFile(): void {
-
-    var knownPath = fs.knownFolders.documents();
-    var folderPath = fs.path.join(knownPath.path, "Giftler");
-
-    var folder = fs.Folder.fromPath(folderPath);
-    var path = fs.path.join(folderPath, "pic.png");
-
-    var saved = this.image.saveToFile(path, "png");
-    console.log(saved);
+saveToFile(res){
+  let imgsrc = res;
+        this.imagePath = this.utilsService.documentsPath(`photo-${Date.now()}.png`);
+        imgsrc.saveToFile(this.imagePath, enums.ImageFormat.png);       
 }
 
-saveImage(image){
-    this.firebaseService.saveImage(this.imagePath).then((uploadedFile: any) => {
-          appSettings.setString('filepath', uploadedFile.name);
+
+editGift(id: string){
+  if(this.imagePath){
+    //upload the file, then save all
+    this.firebaseService.uploadFile(this.imagePath).then((uploadedFile: any) => {
+          this.uploadedImagePath = 'https://firebasestorage.googleapis.com/v0/b/giftler-f48c4.appspot.com/o/'+uploadedFile.name+'?alt=media&token=abc';
+          this.firebaseService.editGift(id,this.description,this.uploadedImagePath).then((result:any) => {
+              alert(result)
+          }, (error: any) => {
+              alert(error);
+          });
         }, (error: any) => {
           alert('File upload error: ' + error);
         });
-}
-
-editGift(id: string){
-    if(this.image){
-        this.saveImage(this.image)
-    }
-    this.firebaseService.editGift(id,this.description,this.image).then((result:any) => {
-          alert(result)
-        }, (error: any) => {
-          alert(error);
-        }); 
+  }
+  else {
+    //just edit the description
+    this.firebaseService.editGift(id,this.description,"").then((result:any) => {
+        alert(result)
+    }, (error: any) => {
+        alert(error);
+    });
+  }
+     
 }
 
 
