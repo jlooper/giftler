@@ -4,12 +4,14 @@ import { BackendService } from "./backend.service";
 import firebase = require("nativescript-plugin-firebase");
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {UtilsService} from './utils.service';
 import 'rxjs/add/operator/share';
 
 @Injectable()
 export class FirebaseService {
   constructor(
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private utils: UtilsService
   ){}
     
   items: BehaviorSubject<Array<Gift>> = new BehaviorSubject([]);
@@ -147,12 +149,12 @@ export class FirebaseService {
         }); 
   }
 
-  editGift(id:string, description: string){
+  editGift(id:string, description: string, image: string){
     this.publishUpdates();
-    return firebase.update("/Gifts/"+id+"",{description: description})
+    return firebase.update("/Gifts/"+id+"",{description: description, image: image})
       .then(
         function (result:any) {
-          return 'You have successfully described this gift!';
+          return 'You have successfully edited this gift!';
         },
         function (errorMessage:any) {
           console.log(errorMessage);
@@ -161,6 +163,19 @@ export class FirebaseService {
   delete(gift: Gift) {
     return firebase.remove("/Gifts/"+gift.id+"")
       .catch(this.handleErrors);
+  }
+  
+  public saveImage(localPath: string, file?: any): Promise<any> {
+      let filename = this.utils.getFilename(localPath);
+      let remotePath = `${filename}`;   
+      return firebase.uploadFile({
+        remoteFullPath: remotePath,
+        localFullPath: localPath,
+        onProgress: function(status) {
+            console.log("Uploaded fraction: " + status.fractionCompleted);
+            console.log("Percentage complete: " + status.percentageCompleted);
+        }
+      });
   }
 
   handleErrors(error) {

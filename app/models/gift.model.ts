@@ -5,7 +5,7 @@ export class Gift {
         public name: string,
         public date: string,
         public description: string,
-        public imagepath: string,
+        public image: string,
         public UID: string 
       )
     {}   

@@ -39,7 +39,7 @@ ngOnInit(){
       this.name,
       this.date,
       this.description,
-      this.imagepath,
+      this.image,
       this.UID)
     let myGift:string = this.gift.name;
     this.firebaseService.add(myGift).then((message:any) => {

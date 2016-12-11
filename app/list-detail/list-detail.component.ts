@@ -7,6 +7,7 @@ import {Gift} from "../models";
 import { Image } from "ui/image";
 import { ImageSource, fromAsset } from "image-source";
 import { ImageAsset } from "image-asset";
+import * as appSettings from 'application-settings';
 
 import * as camera from "nativescript-camera";
 import * as fs from "file-system";
@@ -27,6 +28,7 @@ export class ListDetailComponent implements OnInit {
   description: string;
   image: ImageSource;
   private sub: any;
+  private imagePath: string;
   public gift: Observable<any>;
   
   constructor(
@@ -66,6 +68,7 @@ takePhoto() {
             fromAsset(imageAsset).then(res => {
                 myImageSource = res;
                 this.image = myImageSource;
+                this.saveToFile();
             })
         }).catch(function (err) {
             console.log("Error -> " + err.message);
@@ -78,14 +81,25 @@ saveToFile(): void {
     var folderPath = fs.path.join(knownPath.path, "Giftler");
 
     var folder = fs.Folder.fromPath(folderPath);
-    var path = fs.path.join(folderPath, "myPhoto.png");
+    var path = fs.path.join(folderPath, "pic.png");
 
-    var saved = myImageSource.saveToFile(path, "png");
+    var saved = this.image.saveToFile(path, "png");
     console.log(saved);
 }
 
+saveImage(image){
+    this.firebaseService.saveImage(this.imagePath).then((uploadedFile: any) => {
+          appSettings.setString('filepath', uploadedFile.name);
+        }, (error: any) => {
+          alert('File upload error: ' + error);
+        });
+}
+
 editGift(id: string){
-    this.firebaseService.editGift(id,this.description).then((result:any) => {
+    if(this.image){
+        this.saveImage(this.image)
+    }
+    this.firebaseService.editGift(id,this.description,this.image).then((result:any) => {
           alert(result)
         }, (error: any) => {
           alert(error);
