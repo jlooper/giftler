@@ -27,6 +27,7 @@ export class ListDetailComponent implements OnInit {
   id: string;
   name: string;
   description: string;
+  imagepath: string;
   image: any;
   private sub: any;
   private imagePath: string;
@@ -58,6 +59,9 @@ export class ListDetailComponent implements OnInit {
             }
             if (prop === "description") {
               this.description = gift[prop];
+            }
+            if (prop === "imagepath") {
+              this.imagepath = gift[prop];
             }                       
           }
         });

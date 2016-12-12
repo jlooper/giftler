@@ -139,7 +139,7 @@ export class FirebaseService {
   add(gift: string) {   
     return firebase.push(
         "/Gifts",
-        { "name": gift, "UID": BackendService.token, "date": 0 - Date.now() }
+        { "name": gift, "UID": BackendService.token, "date": 0 - Date.now(), "imagepath": ""}
       ).then(
         function (result:any) {
           return 'Gift added to your wishlist!';
