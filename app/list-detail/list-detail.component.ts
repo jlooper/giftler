@@ -1,15 +1,13 @@
-import {Component, OnInit, NgZone} from '@angular/core';
+import {Component, OnInit, NgZone, ViewChild, ElementRef} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Router, ActivatedRoute} from '@angular/router';
 import { FirebaseService, UtilsService } from "../services";
 import {Gift} from "../models";
-//camera imports
-//import { Image } from "ui/image";
-//import { ImageSource, fromAsset, fromNativeSource } from "image-source";
 import * as enums from 'ui/enums';
 import * as imageSource from 'image-source';
-//import { ImageAsset } from "image-asset";
-//import * as appSettings from 'application-settings';
+import { TextView } from "ui/text-view";
+import { isAndroid } from "platform";
+import { View } from "ui/core/view";
 
 import * as camera from "nativescript-camera";
 import * as fs from "file-system";
@@ -23,6 +21,7 @@ var img;
   templateUrl: "list-detail.html"
 })
 export class ListDetailComponent implements OnInit {
+  @ViewChild('myGift') myGift: ElementRef;
   
   id: string;
   name: string;
@@ -96,7 +95,7 @@ saveToFile(res){
 
 
 editGift(id: string){
-  if(this.imagePath){
+  if(this.image){
     //upload the file, then save all
     this.firebaseService.uploadFile(this.imagePath).then((uploadedFile: any) => {
           this.uploadedImageName = uploadedFile.name;
@@ -114,13 +113,22 @@ editGift(id: string){
   }
   else {
     //just edit the description
-    this.firebaseService.editGift(id,this.description,"").then((result:any) => {
+    this.firebaseService.editDescription(id,this.description).then((result:any) => {
         alert(result)
     }, (error: any) => {
         alert(error);
     });
   }
      
+}
+
+doneTap(args) {
+    let textview: TextView = <TextView>args.object;
+    let myGift = <View>this.myGift.nativeElement;
+    myGift.focus();
+        if (isAndroid) {
+            textview.android.clearFocus();
+        }
 }
 
 
