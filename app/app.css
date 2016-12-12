@@ -22,10 +22,6 @@ Page {
     margin-bottom: 10;
 }
 
-.fa {
-  font-family: FontAwesome, fontawesome-webfont;
-}
-
 .card {
     margin: 10;
     padding: 5;
