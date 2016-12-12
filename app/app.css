@@ -11,11 +11,6 @@ Page {
 .btn-primary {
   background-color: #66cc33; 
 }
-
-.input-border{
-    border-width: 1;
-    border-color: #d50000;
-}
 .header {
     color:white;
     font-weight: bold;

@@ -1,11 +1,10 @@
-import {Component, OnInit, NgZone, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, NgZone} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Router, ActivatedRoute} from '@angular/router';
 import { FirebaseService, UtilsService } from "../services";
 import {Gift} from "../models";
 import * as enums from 'ui/enums';
 import * as imageSource from 'image-source';
-import { TextView } from "ui/text-view";
 import { isAndroid } from "platform";
 import { View } from "ui/core/view";
 
@@ -21,7 +20,6 @@ var img;
   templateUrl: "list-detail.html"
 })
 export class ListDetailComponent implements OnInit {
-  @ViewChild('myGift') myGift: ElementRef;
   
   id: string;
   name: string;
@@ -118,19 +116,7 @@ editGift(id: string){
     }, (error: any) => {
         alert(error);
     });
-  }
-     
+  }    
 }
-
-doneTap(args) {
-    let textview: TextView = <TextView>args.object;
-    let myGift = <View>this.myGift.nativeElement;
-    myGift.focus();
-        if (isAndroid) {
-            textview.android.clearFocus();
-        }
-}
-
-
 
 }

@@ -60,17 +60,22 @@ export class LoginComponent {
 
   forgotPassword() {
 
-    var email =  prompt("Enter the email address you used to register for Giftler to reset your password.", "")
-    
-    if(email){
-      this.firebaseService.resetPassword(email)
+    prompt({
+      title: "Forgot Password",
+      message: "Enter the email address you used to register for Giftler to reset your password.",
+      defaultText: "",
+      okButtonText: "Ok",
+      cancelButtonText: "Cancel"
+    }).then((data) => {
+      if (data.result) {
+        this.firebaseService.resetPassword(data.text.trim())
           .then((result:any) => {
             if(result){
               alert(result);
             }
-          })
-          
-    }
+         });
+      }
+    });
  }
   
 toggleDisplay() {

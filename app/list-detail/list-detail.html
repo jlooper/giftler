@@ -1,10 +1,10 @@
 <ActionBar class="action-bar" title="{{name}}"></ActionBar>
     <ScrollView>
-        <StackLayout #myGift class="card">  
+        <StackLayout #myGift class="card form">  
             <Label class="h2" [text]="'I really want: ' +name+''"></Label> 
             <Image *ngIf="imagepath" width="100" height="100" [src]="imagepath"></Image>                    
             <Label class="m-t-5" text="Which is like this..."></Label>
-            <TextView height="100" returnKeyType="done" (returnPress)="doneTap($event)" hint="Tell more about this gift!" [text]="description" class="m-t-10 input input-border" [(ngModel)]="description"></TextView>
+            <TextField hint="Tell more about this gift!" [text]="description" class="m-t-10 input input-border" [(ngModel)]="description"></TextField>
             <Image [src]="image"></Image>
             <GridLayout columns="*,*">
                 <Button col="0" class="btn gold" text="Photo" (tap)="takePhoto()"></Button>
