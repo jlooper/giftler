@@ -6,7 +6,9 @@
             <Label class="m-t-5" text="Which is like this..."></Label>
             <TextView height="100" returnKeyType="done" (returnPress)="doneTap($event)" hint="Tell more about this gift!" [text]="description" class="m-t-10 input input-border" [(ngModel)]="description"></TextView>
             <Image [src]="image"></Image>
-            <Button class="btn gold" text="Photo" (tap)="takePhoto()"></Button>
-            <Button class="btn btn-primary" text="Save" (tap)="editGift(id)"></Button>    
+            <GridLayout columns="*,*">
+                <Button col="0" class="btn gold" text="Photo" (tap)="takePhoto()"></Button>
+                <Button col="1" class="btn btn-primary" text="Save" (tap)="editGift(id)"></Button>
+            </GridLayout> 
         </StackLayout>
     </ScrollView>
