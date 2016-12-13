@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Page} from "ui/page";
-import { BackendService, FirebaseService } from "../services";
+import {BackendService, FirebaseService} from "../services";
 import {Gift} from "../models";
-import { RouterExtensions } from 'nativescript-angular/router/router-extensions';
+import {RouterExtensions} from 'nativescript-angular/router/router-extensions';
 import {Router} from '@angular/router';
 
 @Component({
@@ -22,6 +22,7 @@ export class ListComponent implements OnInit {
   public gift: Gift;
 
   public gifts$: Observable<any>;
+  public message$: Observable<any>;
   
   constructor(private routerExtensions: RouterExtensions,
     private firebaseService: FirebaseService,
@@ -30,9 +31,9 @@ export class ListComponent implements OnInit {
 
 ngOnInit(){
   this.gifts$ = <any>this.firebaseService.getMyWishList();
-  console.log(JSON.stringify(this.gifts$))
-  this.firebaseService.getMyMessage();
+  this.message$ = <any>this.firebaseService.getMyMessage();
 }
+
   add() {
      this.gift = new Gift(
       this.id,

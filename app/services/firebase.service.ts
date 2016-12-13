@@ -65,7 +65,6 @@ export class FirebaseService {
   getMyWishList(): Observable<any> {
     return new Observable((observer: any) => {
       let path = 'Gifts';
-      let listener: any;
       
         let onValueEvent = (snapshot: any) => {
           this.ngZone.run(() => {
@@ -74,12 +73,7 @@ export class FirebaseService {
              observer.next(results);
           });
         };
-
-        firebase.addValueEventListener(onValueEvent, `/${path}`).then(() => {});
-
-        return () => {
-        // Unsubscribe             
-      };
+        firebase.addValueEventListener(onValueEvent, `/${path}`);
     }).share();              
   }
 
@@ -89,11 +83,12 @@ export class FirebaseService {
     }).share();
   }
 
-  getMyMessage(){
-    firebase.getRemoteConfig({
-    developerMode: false, // play with this boolean to get more frequent updates during development
-    cacheExpirationSeconds: 300, // 10 minutes, default is 12 hours.. set to a lower value during dev
-    properties: [{
+  getMyMessage(): Observable<any>{
+    return new Observable((observer:any) => {
+      firebase.getRemoteConfig({
+      developerMode: false, // play with this boolean to get more frequent updates during development
+      cacheExpirationSeconds: 300, // 10 minutes, default is 12 hours.. set to a lower value during dev
+      properties: [{
       key: "message",
       default: "Happy Holidays!"
     }]
@@ -102,27 +97,27 @@ export class FirebaseService {
           console.log("Fetched at " + result.lastFetch + (result.throttled ? " (throttled)" : ""));
           for (let entry in result.properties) 
             { 
-              alert(result.properties[entry]);
+              observer.next(result.properties[entry]);
             }
         }
     );
-  }
+  }).share();
+}
+
+    
 
   handleSnapshot(data: any) {
-    console.log(JSON.stringify(data))
     //empty array, then refill and filter
     this._allItems = [];
     if (data) {
       for (let id in data) {        
         let result = (<any>Object).assign({id: id}, data[id]);
-        console.log(JSON.stringify(result))
         if(BackendService.token === result.UID){
           this._allItems.push(result);
         }        
       }
       this.publishUpdates();
     }
-    console.log(JSON.stringify(this._allItems))
     return this._allItems;
   }
 

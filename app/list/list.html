@@ -9,6 +9,7 @@
 <ScrollView>
 
     <StackLayout>
+    <Label class="gold card" textWrap="true" [text]="message$ | async"></Label>
     <Label class="h2 header" text="I want..."></Label>
     <StackLayout class="card">    
         <GridLayout columns="2*,1*" class="form">
