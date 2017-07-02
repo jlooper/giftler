@@ -20,13 +20,13 @@
     <Label class="h2 header" text="My Wish List"></Label>
     <StackLayout class="card">
         <ListView [items]="gifts$ | async"  height="300">
-            <template let-item="item">                  
+            <ng-template let-item="item">                  
                 <GridLayout columns="auto,*,auto">
                     <Image class="m-5" horizontalAlignment="left" col="0" width="40" height="40" [src]="item.imagepath.length>0 ? item.imagepath : '~/assets/camera.png'"></Image>
                     <Label class="m-5"  (tap)="viewDetail(item.id)" col="1" [text]='item.name'></Label>
                     <Image class="m-5" col="2" horizontalAlignment="right" width="40" height="40" (tap)="delete(item)" [src]="'~/assets/trash.png'"></Image>
                 </GridLayout>                 
-            </template>
+            </ng-template>
         </ListView>
     </StackLayout>
 
